@@ -24,14 +24,14 @@
       ];
       buildEnvVars = {
         PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
-        
       };
       pkgs = import nixpkgs { inherit system overlays; };
     in
     {
       devShells.default = pkgs.mkShell {
         nativeBuildInputs = with pkgs; [
-          cacert
+          geckodriver
+          chromedriver
           rustToolchain
           openssl
           wasm-pack
@@ -45,8 +45,6 @@
 
         shellHook = ''
           ${pkgs.rustToolchain}/bin/cargo --version
-          export OPENSSL_DIR="${pkgs.cacert}/etc/ssl"
-          export SSL_CERT_FILE="${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
         '';
       };
     });
