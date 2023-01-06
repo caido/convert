@@ -1,0 +1,2 @@
+Replace jest 29.3.1 with this:
+  https://github.com/facebook/jest.git#819090a3efe179665ddc699f524431095d76d912

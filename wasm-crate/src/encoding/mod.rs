@@ -1,12 +1,10 @@
-use super::UrlEncode;
-use crate::encoding::Operation;
-
+use convert::Operation;
 use serde_wasm_bindgen::from_value;
 use wasm_bindgen::prelude::*;
 
-#[wasm_bindgen(js_name = Foo)]
-pub struct WUrlEncode {
-    pub url_encode: UrlEncode,
+#[wasm_bindgen]
+pub struct UrlEncode {
+    url_encode: convert::UrlEncode,
 }
 
 #[wasm_bindgen(typescript_custom_section)]
@@ -19,16 +17,16 @@ interface IUrlEncode {
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(typescript_type = "IUrlEncode")]
-    pub type IUrlDecode;
+    pub type IUrlEncode;
 }
 
 #[wasm_bindgen]
-impl WUrlEncode {
+impl UrlEncode {
     #[wasm_bindgen(constructor)]
-    pub fn new(params: IUrlDecode) -> WUrlEncode {
+    pub fn new(params: IUrlEncode) -> UrlEncode {
         let js_value: JsValue = params.into();
-        let url_encode: UrlEncode = from_value(js_value).unwrap();
-        WUrlEncode { url_encode }
+        let url_encode: convert::UrlEncode = from_value(js_value).unwrap();
+        UrlEncode { url_encode }
     }
 
     pub fn apply(&self, input: &[u8]) -> Result<Vec<u8>, JsValue> {

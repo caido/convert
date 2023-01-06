@@ -1,33 +1,5 @@
-[package]
-name = "convert"
-version = "0.1.0"
-authors = ["chris <christo1771@gmail.com>"]
-edition = "2018"
-
-[lib]
-crate-type = ["cdylib", "rlib"]
-
-[dependencies]
-base64 = "0.13.1"
-urlencoding = "2.1.2"
-hex = "0.4.3"
-md5 = "0.7.0"
-sha1 = "0.10.5"
-sha2 = "0.10.6"
-thiserror = "1.0.37"
-serde = { version = "1.0", features = ["derive"] }
-# Only for wasm32
-wasm-bindgen = "0.2.63"
-serde-wasm-bindgen = "0.4"
-
-[target.'cfg(target_arch = "wasm32")'.dependencies]
-js-sys = "0.3.60"
-console_error_panic_hook = "0.1.6"
-wee_alloc = "0.4.5"
-
-[dev-dependencies]
-wasm-bindgen-test = "0.3.13"
-
-[profile.release]
-# Tell `rustc` to optimize for small code size.
-opt-level = "s"
+[workspace]
+members = [
+    "wasm-crate",
+    "convert-crate"
+]

@@ -1,0 +1,26 @@
+{
+  "name": "web",
+  "version": "0.0.0-local",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "exe": "node --require=./suppress-experimental-warnings.cjs --loader=ts-node/esm/transpile-only --experimental-modules --experimental-wasm-modules --experimental-vm-modules --experimental-specifier-resolution=node",
+    "test": "yarn exe $(yarn bin jest)"
+  },
+  "dependencies": {
+    "next": "^13.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "wasm-convert": "0.0.0-local"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.2.2",
+    "@types/react": "18.0.25",
+    "jest": "29.3.1",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
+  }
+}
