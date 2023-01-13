@@ -11,7 +11,7 @@ describe("wasm-convert", () => {
   });
 });
 
-function equal(buf1: ArrayBufferLike, buf2: ArrayBufferLike) {
+const equal = (buf1: ArrayBufferLike, buf2: ArrayBufferLike) => {
   if (buf1.byteLength != buf2.byteLength) return false;
   var dv1 = new Int8Array(buf1);
   var dv2 = new Int8Array(buf2);
@@ -19,6 +19,6 @@ function equal(buf1: ArrayBufferLike, buf2: ArrayBufferLike) {
     if (dv1[i] != dv2[i]) return false;
   }
   return true;
-}
+};
 
 export {};

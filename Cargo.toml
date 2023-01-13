@@ -1,5 +1,5 @@
 [workspace]
 members = [
-    "wasm-crate",
-    "convert-crate"
+    "convert-wasm",
+    "convert"
 ]
