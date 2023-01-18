@@ -1,8 +1,9 @@
-use super::Operation;
-use super::OperationError;
 use bstr::ByteSlice;
 use percent_encoding::{self, percent_encode_byte};
 use serde::{Deserialize, Serialize};
+
+use super::Operation;
+use super::OperationError;
 
 #[derive(Serialize, Deserialize, Clone, Copy)]
 pub struct UrlDecode {}

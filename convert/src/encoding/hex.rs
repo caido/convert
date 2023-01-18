@@ -1,7 +1,8 @@
-use super::Operation;
-use super::OperationError;
 use hex;
 use serde::{Deserialize, Serialize};
+
+use super::Operation;
+use super::OperationError;
 
 #[derive(Serialize, Deserialize, Clone, Copy)]
 pub struct HexDecode {}

@@ -1,8 +1,9 @@
-use base64::DecodeError as DecodeB64Error;
 use core::str::Utf8Error;
-use hex::FromHexError;
 use std::fmt::Debug;
 use std::string::FromUtf8Error;
+
+use base64::DecodeError as DecodeB64Error;
+use hex::FromHexError;
 
 #[derive(thiserror::Error, Debug)]
 pub enum OperationError {
