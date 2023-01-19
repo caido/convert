@@ -24,7 +24,7 @@ impl UrlDecode {
 #[derive(Serialize, Deserialize, Clone)]
 pub struct UrlEncode {
     non_ascii: bool,
-    charset: Vec<u8>,
+    charset: String,
 }
 
 fn extend_with_grapheme_encode(output: &mut Vec<u8>, grapheme: &str) {
@@ -36,7 +36,7 @@ fn extend_with_grapheme_encode(output: &mut Vec<u8>, grapheme: &str) {
 
 impl Operation for UrlEncode {
     fn execute(&self, input: &[u8]) -> Result<Vec<u8>, OperationError> {
-        let charset = self.charset.graphemes();
+        let charset = self.charset.as_bytes().graphemes();
         let input_graphemes = input.graphemes();
         let mut output: Vec<u8> = vec![];
 
@@ -55,10 +55,10 @@ impl Operation for UrlEncode {
 }
 
 impl UrlEncode {
-    pub fn new(non_ascii: bool, charset: &[u8]) -> Self {
+    pub fn new(non_ascii: bool, charset: Option<String>) -> Self {
         UrlEncode {
             non_ascii,
-            charset: charset.to_vec(),
+            charset: charset.unwrap_or("".to_string()),
         }
     }
 }
@@ -79,7 +79,7 @@ mod tests {
 
     #[test]
     fn url_encode_unicode_char() {
-        let encoder = UrlEncode::new(false, b"\xF0\x9F\xA5\x96");
+        let encoder = UrlEncode::new(false, Some("🥖".to_string()));
         let actual = encoder.execute("a🥖🥖st".as_bytes()).unwrap();
         let expected = "a%F0%9F%A5%96%F0%9F%A5%96st".as_bytes().to_vec();
         assert_eq!(actual, expected);
@@ -87,7 +87,7 @@ mod tests {
 
     #[test]
     fn url_encode_non_ascii() {
-        let encoder = UrlEncode::new(true, b"");
+        let encoder = UrlEncode::new(true, None);
         let actual = encoder.execute("caido @éé".as_bytes()).unwrap();
         let expected = "caido @%C3%A9%C3%A9".as_bytes().to_vec();
         println!("{:?}", String::from_utf8(expected.clone()));
@@ -96,9 +96,10 @@ mod tests {
 
     #[test]
     fn url_encode_non_ascii_and_charset() {
-        let encoder = UrlEncode::new(true, b"");
+        let encoder = UrlEncode::new(true, Some("c".to_string()));
         let actual = encoder.execute("caido @éé🥖".as_bytes()).unwrap();
-        let expected = "caido @%C3%A9%C3%A9%F0%9F%A5%96".as_bytes().to_vec();
+        let expected = "%63aido @%C3%A9%C3%A9%F0%9F%A5%96".as_bytes().to_vec();
+        println!("{:?}", String::from_utf8(actual.clone()));
         println!("{:?}", String::from_utf8(expected.clone()));
         assert_eq!(actual, expected);
     }
