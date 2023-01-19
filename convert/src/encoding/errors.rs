@@ -5,16 +5,32 @@ use std::string::FromUtf8Error;
 use base64::DecodeError as DecodeB64Error;
 use hex::FromHexError;
 
-#[derive(thiserror::Error, Debug)]
+#[derive(Debug)]
 pub enum OperationError {
-    #[error("InvalidInput `{0}`")]
-    InvalidInput(String),
-    #[error("Error while transforming bytes to utf8 `{0}`")]
-    FromUtf8Error(#[from] FromUtf8Error),
-    #[error("Error while transforming bytes to utf8 `{0}`")]
-    Utf8Error(#[from] Utf8Error),
-    #[error("Could not read as base64 value. `{0}`")]
-    Base64DecodeError(#[from] DecodeB64Error),
-    #[error("Could not read as hex value. `{0}`")]
-    HexDecodeError(#[from] FromHexError),
+    DecodeUtf8Error,
+    DecodeError(String),
+}
+
+impl From<Utf8Error> for OperationError {
+    fn from(_value: Utf8Error) -> Self {
+        OperationError::DecodeUtf8Error
+    }
+}
+
+impl From<FromUtf8Error> for OperationError {
+    fn from(_value: FromUtf8Error) -> Self {
+        OperationError::DecodeUtf8Error
+    }
+}
+
+impl From<DecodeB64Error> for OperationError {
+    fn from(_value: DecodeB64Error) -> Self {
+        OperationError::DecodeError("Invalid Base64 input".to_string())
+    }
+}
+
+impl From<FromHexError> for OperationError {
+    fn from(_value: FromHexError) -> Self {
+        OperationError::DecodeError("Invalid Hex input".to_string())
+    }
 }
