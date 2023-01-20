@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use super::Operation;
 use super::OperationError;
 
-#[derive(Serialize, Deserialize, Clone, Copy)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct UrlDecode {}
 
 impl Operation for UrlDecode {
@@ -99,6 +99,16 @@ mod tests {
         let encoder = UrlEncode::new(true, Some("c".to_string()));
         let actual = encoder.execute("caido @éé🥖".as_bytes()).unwrap();
         let expected = "%63aido @%C3%A9%C3%A9%F0%9F%A5%96".as_bytes().to_vec();
+        println!("{:?}", String::from_utf8(actual.clone()));
+        println!("{:?}", String::from_utf8(expected.clone()));
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn url_encode_charset() {
+        let encoder = UrlEncode::new(true, Some("@t".to_string()));
+        let actual = encoder.execute("a@ test".as_bytes()).unwrap();
+        let expected = "a%40 %74es%74".as_bytes().to_vec();
         println!("{:?}", String::from_utf8(actual.clone()));
         println!("{:?}", String::from_utf8(expected.clone()));
         assert_eq!(actual, expected);

@@ -10,7 +10,6 @@ pub struct HtmlDecode {}
 // and this http://stackoverflow.com/questions/7381974
 impl Operation for HtmlDecode {
     fn execute(&self, input: &[u8]) -> Result<Vec<u8>, OperationError> {
-        println!("{}", String::from_utf8_lossy(&input));
         let mut decoded = vec![];
         let mut i = 0;
         while i < input.len() {
@@ -81,8 +80,6 @@ impl Operation for HtmlEncode {
                 byte => encoded.push(*byte),
             };
         }
-        println!("{}", String::from_utf8_lossy(&encoded));
-
         Ok(encoded)
     }
 }

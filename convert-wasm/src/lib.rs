@@ -1,5 +1,5 @@
 #![allow(non_snake_case)]
 
 mod encoding;
-pub use encoding::IUrlEncode;
-pub use encoding::UrlEncode;
+pub use encoding::url::IUrlEncode;
+pub use encoding::url::UrlEncode;
