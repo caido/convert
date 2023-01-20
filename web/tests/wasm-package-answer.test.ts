@@ -7,6 +7,9 @@ import {
   HexDecode,
   HtmlDecode,
   HtmlEncode,
+  Md5Hash,
+  Sha1Hash,
+  Sha2Hash,
 } from "wasm-convert";
 
 describe("UrlEncoding", () => {
@@ -100,6 +103,49 @@ describe("Html encoding", () => {
       )
     );
     let expected = utf8Encode.encode('\\&<script>alert(1)</script>a"');
+
+    expect(equal(actual, expected)).toBeTruthy();
+  });
+});
+
+describe("Hash", () => {
+  it("Hash bytes with md5", () => {
+    let encoder = new Md5Hash();
+    let utf8Encode = new TextEncoder();
+    let actual = encoder.apply(utf8Encode.encode("caido"));
+
+    let hexEncoder = new HexDecode({});
+    let expected = hexEncoder.apply(
+      utf8Encode.encode("7542bf4fd4500c58ac741ae2e05a1521")
+    );
+
+    expect(equal(actual, expected)).toBeTruthy();
+  });
+
+  it("Hash bytes with sha1", () => {
+    let encoder = new Sha1Hash();
+    let utf8Encode = new TextEncoder();
+    let actual = encoder.apply(utf8Encode.encode("caido"));
+
+    let hexEncoder = new HexDecode({});
+    let expected = hexEncoder.apply(
+      utf8Encode.encode("ba91f49c2d9a785c0fe2af32afff42a51f410596")
+    );
+
+    expect(equal(actual, expected)).toBeTruthy();
+  });
+
+  it("Hash bytes with sha2", () => {
+    let encoder = new Sha2Hash({ version: "Sha256" });
+    let utf8Encode = new TextEncoder();
+    let actual = encoder.apply(utf8Encode.encode("caido"));
+
+    let hexEncoder = new HexDecode({});
+    let expected = hexEncoder.apply(
+      utf8Encode.encode(
+        "d3492c16a592ec2356127c3eefff6bae98321f9932e625c1ce4ec5fedc5301b2"
+      )
+    );
 
     expect(equal(actual, expected)).toBeTruthy();
   });

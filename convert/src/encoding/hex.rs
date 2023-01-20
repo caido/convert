@@ -2,8 +2,8 @@ use bstr::ByteSlice;
 use hex;
 use serde::{Deserialize, Serialize};
 
-use super::Operation;
-use super::OperationError;
+use crate::Operation;
+use crate::OperationError;
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct HexDecode {

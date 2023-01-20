@@ -1,8 +1,8 @@
 use base64;
 use serde::{Deserialize, Serialize};
 
-use super::Operation;
-use super::OperationError;
+use crate::Operation;
+use crate::OperationError;
 
 #[derive(Serialize, Deserialize, Clone, Copy)]
 pub struct Base64Decode {}

@@ -2,8 +2,8 @@ use bstr::ByteSlice;
 use percent_encoding::{self, percent_encode_byte};
 use serde::{Deserialize, Serialize};
 
-use super::Operation;
-use super::OperationError;
+use crate::Operation;
+use crate::OperationError;
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct UrlDecode {}
@@ -109,8 +109,6 @@ mod tests {
         let encoder = UrlEncode::new(true, Some("@t".to_string()));
         let actual = encoder.execute("a@ test".as_bytes()).unwrap();
         let expected = "a%40 %74es%74".as_bytes().to_vec();
-        println!("{:?}", String::from_utf8(actual.clone()));
-        println!("{:?}", String::from_utf8(expected.clone()));
         assert_eq!(actual, expected);
     }
 }
