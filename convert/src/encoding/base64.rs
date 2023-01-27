@@ -1,56 +1,44 @@
-use base64;
-use serde::{Deserialize, Serialize};
+use caido_convert::Operation;
+use wasm_bindgen::prelude::*;
 
-use crate::Operation;
-use crate::OperationError;
-
-#[derive(Serialize, Deserialize, Clone, Copy)]
-pub struct Base64Decode {}
-
-impl Operation for Base64Decode {
-    fn execute(&self, input: &[u8]) -> Result<Vec<u8>, OperationError> {
-        Ok(base64::decode(input)?)
-    }
+#[wasm_bindgen]
+pub struct Base64Encode {
+    base64_encode: caido_convert::Base64Encode,
 }
 
-impl Base64Decode {
-    pub fn new() -> Self {
-        Base64Decode {}
-    }
-}
-
-#[derive(Serialize, Deserialize, Clone, Copy)]
-pub struct Base64Encode {}
-
-impl Operation for Base64Encode {
-    fn execute(&self, input: &[u8]) -> Result<Vec<u8>, OperationError> {
-        Ok(base64::encode(input).into())
-    }
-}
-
+#[wasm_bindgen]
 impl Base64Encode {
-    pub fn new() -> Self {
-        Base64Encode {}
+    #[wasm_bindgen(constructor)]
+    pub fn new() -> Base64Encode {
+        Base64Encode {
+            base64_encode: caido_convert::Base64Encode::new(),
+        }
+    }
+
+    pub fn apply(&self, input: &[u8]) -> Result<Vec<u8>, JsValue> {
+        self.base64_encode
+            .execute(input)
+            .map_err(|err| JsValue::from_str(&format!("{err:?}")))
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+#[wasm_bindgen]
+pub struct Base64Decode {
+    base64_decode: caido_convert::Base64Decode,
+}
 
-    #[test]
-    fn base64_decode() {
-        let encoder = Base64Decode::new();
-        let actual = encoder.execute("Y2FpZG8=".as_bytes()).unwrap();
-        let expected = "caido".as_bytes().to_vec();
-        assert_eq!(actual, expected);
+#[wasm_bindgen]
+impl Base64Decode {
+    #[wasm_bindgen(constructor)]
+    pub fn new() -> Base64Decode {
+        Base64Decode {
+            base64_decode: caido_convert::Base64Decode::new(),
+        }
     }
 
-    #[test]
-    fn base64_encode() {
-        let encoder = Base64Encode::new();
-        let actual = encoder.execute("caido".as_bytes()).unwrap();
-        let expected = "Y2FpZG8=".as_bytes().to_vec();
-        assert_eq!(actual, expected);
+    pub fn apply(&self, input: &[u8]) -> Result<Vec<u8>, JsValue> {
+        self.base64_decode
+            .execute(input)
+            .map_err(|err| JsValue::from_str(&format!("{err:?}")))
     }
 }

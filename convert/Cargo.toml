@@ -1,20 +1,24 @@
 [package]
 name = "convert"
 version = "0.1.0"
-authors = ["chris <christo1771@gmail.com>"]
-edition = "2018"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/caido/convert"
+authors = ["Christopher Guay <chris@caido.io>", "Caido <info@caido.io>"]
+readme = "README.md"
+description = """
+WASM bindings for caido/convert crate
+"""
 
 [lib]
-crate-type = ["cdylib", "rlib"]
+crate-type = ["cdylib"]
 
 [dependencies]
-base64 = "0.13.1"
-bstr = "1.1.0"
-percent-encoding = "2.2.0"
-hex = "0.4.3"
-md5 = "0.7.0"
-sha1 = "0.10.5"
-sha2 = "0.10.6"
-thiserror = "1.0.37"
+caido-convert = { path = "../caido-convert" }
 serde = { version = "1.0", features = ["derive"] }
-html-escape = "0.2.13"
+serde-wasm-bindgen = "0.4"
+wasm-bindgen = "0.2.69"
+
+[profile.release]
+lto = true
+opt-level = 's'

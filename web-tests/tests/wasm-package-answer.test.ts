@@ -10,7 +10,7 @@ import {
   Md5Hash,
   Sha1Hash,
   Sha2Hash,
-} from "wasm-convert";
+} from "../../wasm-package";
 
 describe("UrlEncoding", () => {
   it("Url encode string", () => {
@@ -44,7 +44,7 @@ describe("Base64 encoding", () => {
     expect(equal(actual, expected)).toBeTruthy();
   });
 
-  it("Base64 encode bytes", () => {
+  it("Base64 decode bytes", () => {
     let encoder = new Base64Decode();
     let utf8Encode = new TextEncoder();
     let actual = encoder.apply(utf8Encode.encode("Y2FpZG8="));
@@ -94,10 +94,10 @@ describe("Html encoding", () => {
     expect(equal(actual, expected)).toBeTruthy();
   });
 
-  it("Html encode bytes", () => {
-    let encoder = new HtmlDecode();
+  it("Html decode bytes", () => {
+    let decoder = new HtmlDecode();
     let utf8Encode = new TextEncoder();
-    let actual = encoder.apply(
+    let actual = decoder.apply(
       utf8Encode.encode(
         "&#39;&amp;&lt;script&gt;alert(1)&lt;/script&gt;a&quot;"
       )

@@ -1,101 +1,95 @@
-use md5;
+use caido_convert::{Operation, Sha2Version};
 use serde::{Deserialize, Serialize};
-use sha1::{Digest as Sha1Digest, Sha1};
+use serde_wasm_bindgen::from_value;
+use wasm_bindgen::prelude::*;
 
-use crate::Operation;
-use crate::OperationError;
-
-#[derive(Serialize, Deserialize, Clone)]
-pub struct Md5Hash {}
-
-impl Operation for Md5Hash {
-    fn execute(&self, input: &[u8]) -> Result<Vec<u8>, OperationError> {
-        Ok(md5::compute(input).to_vec())
-    }
+#[wasm_bindgen]
+pub struct Md5Hash {
+    md5_hash: caido_convert::Md5Hash,
 }
 
+#[wasm_bindgen]
 impl Md5Hash {
-    pub fn new() -> Self {
-        Md5Hash {}
+    #[wasm_bindgen(constructor)]
+    pub fn new() -> Md5Hash {
+        Md5Hash {
+            md5_hash: caido_convert::Md5Hash::new(),
+        }
+    }
+
+    pub fn apply(&self, input: &[u8]) -> Result<Vec<u8>, JsValue> {
+        self.md5_hash
+            .execute(input)
+            .map_err(|err| JsValue::from_str(&format!("{err:?}")))
     }
 }
 
-#[derive(Serialize, Deserialize, Clone)]
-pub struct Sha1Hash {}
-
-impl Operation for Sha1Hash {
-    fn execute(&self, input: &[u8]) -> Result<Vec<u8>, OperationError> {
-        let mut hasher = Sha1::new();
-        hasher.update(input);
-        Ok(hasher.finalize().to_vec())
-    }
+#[wasm_bindgen]
+pub struct Sha1Hash {
+    sha1_hash: caido_convert::Sha1Hash,
 }
 
+#[wasm_bindgen]
 impl Sha1Hash {
+    #[wasm_bindgen(constructor)]
     pub fn new() -> Sha1Hash {
-        Sha1Hash {}
+        Sha1Hash {
+            sha1_hash: caido_convert::Sha1Hash::new(),
+        }
+    }
+
+    pub fn apply(&self, input: &[u8]) -> Result<Vec<u8>, JsValue> {
+        self.sha1_hash
+            .execute(input)
+            .map_err(|err| JsValue::from_str(&format!("{err:?}")))
     }
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[wasm_bindgen]
 pub struct Sha2Hash {
-    version: Sha2Version,
+    sha2_hash: caido_convert::Sha2Hash,
 }
 
+#[wasm_bindgen(typescript_custom_section)]
+const ISha2Hash: &'static str = r#"
+interface ISha2Hash {
+    version?: "Sha224" | "Sha256" | "Sha384" | "Sha512";
+}
+"#;
+
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(typescript_type = "ISha2Hash")]
+    pub type ISha2Hash;
+}
+
+#[derive(Serialize, Deserialize)]
+struct JsSha2Hash {
+    version: String,
+}
+
+#[wasm_bindgen]
 impl Sha2Hash {
-    pub fn new(version: Sha2Version) -> Sha2Hash {
-        Sha2Hash { version }
-    }
-}
-
-#[derive(Clone, Serialize, Deserialize)]
-pub enum Sha2Version {
-    Sha224,
-    Sha256,
-    Sha384,
-    Sha512,
-}
-
-impl Operation for Sha2Hash {
-    fn execute(&self, input: &[u8]) -> Result<Vec<u8>, OperationError> {
-        let hash_vec = match self.version {
-            Sha2Version::Sha224 => {
-                let mut hasher = sha2::Sha224::new();
-                hasher.update(input);
-                hasher.finalize().to_vec()
-            }
-            Sha2Version::Sha256 => {
-                let mut hasher = sha2::Sha256::new();
-                hasher.update(input);
-                hasher.finalize().to_vec()
-            }
-            Sha2Version::Sha384 => {
-                let mut hasher = sha2::Sha384::new();
-                hasher.update(input);
-                hasher.finalize().to_vec()
-            }
-            Sha2Version::Sha512 => {
-                let mut hasher = sha2::Sha512::new();
-                hasher.update(input);
-                hasher.finalize().to_vec()
-            }
+    #[wasm_bindgen(constructor)]
+    pub fn new(params: ISha2Hash) -> Result<Sha2Hash, JsValue> {
+        let js_value: JsValue = params.into();
+        let js_params: JsSha2Hash =
+            from_value(js_value).map_err(|_err| JsValue::from_str("Invalid argument"))?;
+        let version = match js_params.version.as_str() {
+            "Sha224" => Sha2Version::Sha224,
+            "Sha256" => Sha2Version::Sha256,
+            "Sha384" => Sha2Version::Sha384,
+            "Sha512" => Sha2Version::Sha512,
+            _ => Sha2Version::Sha256,
         };
-        Ok(hash_vec)
+        Ok(Sha2Hash {
+            sha2_hash: caido_convert::Sha2Hash::new(version),
+        })
     }
-}
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::HexEncode;
-
-    #[test]
-    fn hash_md5() {
-        let hasher = Md5Hash::new();
-        let res = hasher.execute(b"caido").unwrap();
-        let encode = HexEncode::new(crate::HexFormat::Lower, None, 0);
-        let hex_result = encode.execute(&res).unwrap();
-        println!("{}", String::from_utf8_lossy(&hex_result));
-        assert_eq!(b"test", b"test")
+    pub fn apply(&self, input: &[u8]) -> Result<Vec<u8>, JsValue> {
+        self.sha2_hash
+            .execute(input)
+            .map_err(|err| JsValue::from_str(&format!("{err:?}")))
     }
 }
