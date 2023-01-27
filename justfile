@@ -4,8 +4,8 @@ wasm-crate := "./convert"
 default:
     @just --list
 
-build-caido-convert:
-  wasm-pack build --out-dir ../{{wasm-package-path}} --target=bundler ./{{wasm-crate}}
+build-convert-release:
+  wasm-pack build --out-dir ../{{wasm-package-path}} --target=bundler ./{{wasm-crate}} --scope caido
   wasm-opt -Os -o ./{{wasm-package-path}}/caido_convert_bg.wasm ./{{wasm-package-path}}/caido_convert_bg.wasm
 
 build-wasm-dev:
