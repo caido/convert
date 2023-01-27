@@ -1,0 +1,25 @@
+[package]
+name = "caido-convert"
+version = "0.1.0"
+authors = ["Christopher Guay <chris@caido.io>", "Caido <info@caido.io>"]
+repository = "https://github.com/caido/convert"
+readme = "README.md"
+edition = "2018"
+description = """
+Encoding library for web security applications  
+"""
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+base64 = "0.13.1"
+bstr = "1.1.0"
+percent-encoding = "2.2.0"
+hex = "0.4.3"
+md5 = "0.7.0"
+sha1 = "0.10.5"
+sha2 = "0.10.6"
+thiserror = "1.0.37"
+serde = { version = "1.0", features = ["derive"] }
+html-escape = "0.2.13"

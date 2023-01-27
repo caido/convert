@@ -3,7 +3,7 @@
   "workspaces": {
     "packages": [
       "wasm-package",
-      "web"
+      "web-tests"
     ]
   },
   "devDependencies": {
