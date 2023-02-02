@@ -18,6 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+
       - name: "Setup dependencies and cache"
         uses: ./.github/actions/setup
 
