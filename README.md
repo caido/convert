@@ -8,3 +8,4 @@ The core logic is written in caido/convert crate. The javascript binding are pro
 - [rust](https://www.rust-lang.org/tools/install)
 - wasm-opt `cargo install wasm-opt`
 - just `cargo install just`
+- llvm-cov `cargo install cargo-llvm-cov`

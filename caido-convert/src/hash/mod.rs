@@ -1,10 +1,12 @@
+#[cfg(target_family = "wasm")]
 use serde::{Deserialize, Serialize};
 use sha1::{Digest as Sha1Digest, Sha1};
 
 use crate::Operation;
 use crate::OperationError;
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Clone)]
+#[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub struct Md5Hash {}
 
 impl Operation for Md5Hash {
@@ -19,7 +21,8 @@ impl Md5Hash {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Clone)]
+#[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub struct Sha1Hash {}
 
 impl Operation for Sha1Hash {
@@ -36,7 +39,8 @@ impl Sha1Hash {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Clone)]
+#[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub struct Sha2Hash {
     version: Sha2Version,
 }
@@ -47,7 +51,8 @@ impl Sha2Hash {
     }
 }
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone)]
+#[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub enum Sha2Version {
     Sha224,
     Sha256,
@@ -94,7 +99,6 @@ mod tests {
         let res = hasher.execute(b"caido").unwrap();
         let encode = HexEncode::new(crate::HexFormat::Lower, None, 0);
         let hex_result = encode.execute(&res).unwrap();
-        println!("{}", String::from_utf8_lossy(&hex_result));
-        assert_eq!(b"test", b"test")
+        assert_eq!(hex_result, b"7542bf4fd4500c58ac741ae2e05a1521")
     }
 }

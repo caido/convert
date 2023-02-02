@@ -1,0 +1,16 @@
+name: "Setup"
+description: "Install dependencies"
+
+runs:
+  using: composite
+  steps:
+    - name: Install just
+      uses: extractions/setup-just@v1
+    - name: Restore cargo cache
+      uses: Swatinem/rust-cache@v2
+    - name: Set Node.js 19.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 19.x
+    - uses: jetli/wasm-pack-action@v0.4.0
+    - uses: c-hive/gha-yarn-cache@v2 

@@ -1,9 +1,11 @@
+#[cfg(target_family = "wasm")]
 use serde::{Deserialize, Serialize};
 
 use crate::Operation;
 use crate::OperationError;
 
-#[derive(Serialize, Deserialize, Clone, Copy)]
+#[derive(Clone)]
+#[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub struct HtmlDecode {}
 
 // Inspired by this https://doc.rust-lang.org/stable/nightly-rustc/src/rustdoc/html/escape.rs.html#1-40
@@ -64,7 +66,8 @@ impl HtmlDecode {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, Copy)]
+#[derive(Clone)]
+#[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub struct HtmlEncode {}
 
 impl Operation for HtmlEncode {

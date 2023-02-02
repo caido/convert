@@ -1,0 +1,37 @@
+name: Tests
+
+on:
+  pull_request:
+    types:
+      - review_requested
+  push:
+    branches:
+      - 'ci-cd'
+
+concurrency:
+  group: validate-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: "Validate"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: "Setup dependencies and cache"
+        uses: .github/actions/setup
+
+      - name: Install rust toolchain 
+        run: rustup show
+
+      - name: Install typescript dependencies
+        run: yarn install
+
+      - name: Check format
+        run: just format-check
+
+      - name: Run clippy
+        run: just clippy
+
+      - name: Run tests
+        run : just test
