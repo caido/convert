@@ -1,0 +1,43 @@
+name: Tests
+
+on:
+  pull_request:
+    types:
+      - review_requested
+  push:
+    branches:
+      - 'main'
+
+concurrency:
+  group: validate-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: "Validate"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+
+      - name: "Setup dependencies and cache"
+        uses: ./.github/actions/setup
+
+      - name: Install rust toolchain 
+        run: rustup show
+
+      - name: Build wasm package for tests
+        run: just build-wasm-dev
+
+      - name: Install web-tests dependencies
+        run: yarn install
+
+      - name: Run clippy
+        run: just clippy
+
+      - name: Run rust tests
+        run: cargo test -p caido-convert 
+
+      - name: Run web-tests 
+        run : just wasm-tests

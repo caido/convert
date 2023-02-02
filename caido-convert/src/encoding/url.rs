@@ -1,11 +1,13 @@
 use bstr::ByteSlice;
 use percent_encoding::{self, percent_encode_byte};
+#[cfg(target_family = "wasm")]
 use serde::{Deserialize, Serialize};
 
 use crate::Operation;
 use crate::OperationError;
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Clone)]
+#[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub struct UrlDecode {}
 
 impl Operation for UrlDecode {
@@ -21,7 +23,8 @@ impl UrlDecode {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Clone)]
+#[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub struct UrlEncode {
     non_ascii: bool,
     charset: String,
@@ -58,7 +61,7 @@ impl UrlEncode {
     pub fn new(non_ascii: bool, charset: Option<String>) -> Self {
         UrlEncode {
             non_ascii,
-            charset: charset.unwrap_or("".to_string()),
+            charset: charset.unwrap_or_default(),
         }
     }
 }
@@ -90,7 +93,6 @@ mod tests {
         let encoder = UrlEncode::new(true, None);
         let actual = encoder.execute("caido @éé".as_bytes()).unwrap();
         let expected = "caido @%C3%A9%C3%A9".as_bytes().to_vec();
-        println!("{:?}", String::from_utf8(expected.clone()));
         assert_eq!(actual, expected);
     }
 
@@ -99,8 +101,6 @@ mod tests {
         let encoder = UrlEncode::new(true, Some("c".to_string()));
         let actual = encoder.execute("caido @éé🥖".as_bytes()).unwrap();
         let expected = "%63aido @%C3%A9%C3%A9%F0%9F%A5%96".as_bytes().to_vec();
-        println!("{:?}", String::from_utf8(actual.clone()));
-        println!("{:?}", String::from_utf8(expected.clone()));
         assert_eq!(actual, expected);
     }
 

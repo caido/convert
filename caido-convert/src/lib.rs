@@ -1,5 +1,7 @@
+#[allow(clippy::new_without_default)]
 mod encoding;
 mod errors;
+#[allow(clippy::new_without_default)]
 mod hash;
 pub use encoding::base64::*;
 pub use encoding::hex::*;
