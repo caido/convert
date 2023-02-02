@@ -13,7 +13,7 @@ build-wasm-dev:
   yarn replace-in-file "/\"module\":/" "\"type\": \"module\", \"main\":" "{{wasm-package-path}}/package.json" --isRegex
   yarn prettier --write "{{wasm-package-path}}/package.json"
 
-wasm-tests: build-wasm-dev
+wasm-tests:
   yarn workspace web-tests test
 
 clippy:
@@ -28,6 +28,7 @@ format-check:
 
 test: 
   cargo test -p caido-convert 
+  just build-wasm-dev
   just wasm-tests
 
 coverage:
@@ -35,4 +36,3 @@ coverage:
 
 lcov:
   cargo llvm-cov -p caido-convert --ignore-filename-regex errors --lcov --output-path lcov.info
-  
