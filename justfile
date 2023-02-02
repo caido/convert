@@ -10,10 +10,10 @@ build-convert-release:
 
 build-wasm-dev:
   wasm-pack build --out-dir ../{{wasm-package-path}} --target=bundler ./{{wasm-crate}} --dev
-  yarn replace-in-file "/\"module\":/" "\"type\": \"module\", \"main\":" "{{wasm-package-path}}/package.json" --isRegex
-  yarn prettier --write "{{wasm-package-path}}/package.json"
 
 wasm-tests:
+  yarn replace-in-file "/\"module\":/" "\"type\": \"module\", \"main\":" "{{wasm-package-path}}/package.json" --isRegex
+  yarn prettier --write "{{wasm-package-path}}/package.json"
   yarn workspace web-tests test
 
 clippy:
