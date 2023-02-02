@@ -18,7 +18,7 @@ wasm-tests:
 
 clippy:
   cargo clippy -p caido-convert
-  cargo clippy -p convert
+  cargo clippy -p convert --target wasm32-unknown-unknown
 
 format:
   cargo +nightly fmt
