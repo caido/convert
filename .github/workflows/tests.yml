@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: "Setup dependencies and cache"
-        uses: .github/actions/setup
+        uses: ./.github/actions/setup
 
       - name: Install rust toolchain 
         run: rustup show
