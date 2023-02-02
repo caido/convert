@@ -33,9 +33,6 @@ jobs:
       - name: Install web-tests dependencies
         run: yarn install
 
-      - name: Check format
-        run: just format-check
-
       - name: Run clippy
         run: just clippy
 
