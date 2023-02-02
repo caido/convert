@@ -1,16 +1,19 @@
 use bstr::ByteSlice;
 use hex;
+#[cfg(target_family = "wasm")]
 use serde::{Deserialize, Serialize};
 
 use crate::Operation;
 use crate::OperationError;
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Clone)]
+#[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub struct HexDecode {
     delimiter: Option<String>,
 }
 
-#[derive(Copy, Clone, Serialize, Deserialize)]
+#[derive(Clone)]
+#[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub enum HexFormat {
     Upper,
     Lower,
@@ -37,7 +40,8 @@ impl HexDecode {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Clone)]
+#[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub struct HexEncode {
     format: HexFormat,
     delimiter: Option<String>,
@@ -133,8 +137,6 @@ mod tests {
         let encoder = HexEncode::new(HexFormat::Lower, None, 2);
         let actual = encoder.execute("caido".as_bytes()).unwrap();
         let expected = "6361\n6964\n6f".as_bytes().to_vec();
-        println!("{}", String::from_utf8_lossy(&actual));
-        println!("{}", String::from_utf8_lossy(&expected));
         assert_eq!(actual, expected);
     }
 

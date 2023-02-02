@@ -1,6 +1,6 @@
 # caido-convert
 
-An encoding library for web security applications.
+An encoding library for web security applications. 
 
 ## Install
 `npm install caido-convert`
@@ -15,7 +15,7 @@ let utf8Decode = new TextDecoder();
 let encoder = new Base64Decode();
 let base64 = encoder.apply(utf8Encode.encode("caido")); 
 
-console.log(utf8Decode.decode(base64) // Logs "Y2FpZG8="
+console.log(utf8Decode.decode(base64)) // Logs "Y2FpZG8="
 
 ```
 

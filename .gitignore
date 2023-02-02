@@ -28,4 +28,6 @@ Cargo.lock
 pkg
 target
 wasm-pack.log
-wasm-convert
+wasm-package
+
+lcov.info

@@ -1,10 +1,12 @@
 use base64;
+#[cfg(target_family = "wasm")]
 use serde::{Deserialize, Serialize};
 
 use crate::Operation;
 use crate::OperationError;
 
-#[derive(Serialize, Deserialize, Clone, Copy)]
+#[derive(Clone)]
+#[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub struct Base64Decode {}
 
 impl Operation for Base64Decode {
@@ -19,7 +21,8 @@ impl Base64Decode {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, Copy)]
+#[derive(Clone)]
+#[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub struct Base64Encode {}
 
 impl Operation for Base64Encode {
