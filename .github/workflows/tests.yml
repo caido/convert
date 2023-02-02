@@ -37,7 +37,7 @@ jobs:
         run: just clippy
 
       - name: Run rust tests
-        run: cargo test -p convert 
+        run: cargo test -p caido-convert 
 
       - name: Run web-tests 
         run : just wasm-tests
