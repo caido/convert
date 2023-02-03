@@ -1,3 +1,5 @@
+[![Tests](https://github.com/caido/convert/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/caido/convert/actions/workflows/validate.yml?query=branch%3Amain)
+[![codecov](https://codecov.io/gh/caido/convert/branch/main/graph/badge.svg?token=G3HA8K9IIX)](https://codecov.io/gh/caido/convert)
 # 👋 Welcome
 
 Welcome to caido convert packages! This repo contains the code we use to encode, hash, zip and much more.
