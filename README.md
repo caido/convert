@@ -1,4 +1,4 @@
-[![Tests](https://github.com/caido/convert/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/caido/convert/actions/workflows/validate.yml?query=branch%3Amain)
+[![Tests](https://github.com/caido/convert/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/caido/convert/actions/workflows/tests.yml?query=branch%3Amain)
 [![codecov](https://codecov.io/gh/caido/convert/branch/main/graph/badge.svg?token=G3HA8K9IIX)](https://codecov.io/gh/caido/convert)
 # 👋 Welcome
 
