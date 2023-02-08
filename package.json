@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "wasm-package",
+      "web-tests"
+    ]
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1",
+    "replace-in-file": "^6.3.5"
+  },
+  "packageManager": "yarn@4.0.0-rc.25"
+}
