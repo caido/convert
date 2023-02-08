@@ -1,0 +1,14 @@
+name: 'Prepare Bump'
+description: 'Prepare for version bump'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Intall Cargo Bump
+      shell: bash
+      run: |
+        cargo install --git https://github.com/caido/action-cargo-bump
+    - name: Install toml-cli
+      shell: bash
+      run: |
+        cargo install toml-cli

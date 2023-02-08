@@ -14,8 +14,6 @@ WASM bindings for caido/convert crate
 crate-type = ["cdylib"]
 
 [dependencies]
-#caido-convert = "0.1.0"
-# Replace with the latest caido-convert version when publishing the package on npm
 caido-convert = { path = "../caido-convert" }
 serde = { version = "1.0", features = ["derive"] }
 serde-wasm-bindgen = "0.4"
