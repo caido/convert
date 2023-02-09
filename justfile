@@ -6,7 +6,6 @@ default:
 
 build-convert-release:
   wasm-pack build --out-dir ../{{wasm-package-path}} --target=bundler ./{{wasm-crate}} --scope caido
-  wasm-opt -Os -o ./{{wasm-package-path}}/convert_bg.wasm ./{{wasm-package-path}}/convert_bg.wasm
 
 build-wasm-dev:
   wasm-pack build --out-dir ../{{wasm-package-path}} --target=bundler ./{{wasm-crate}} --dev
