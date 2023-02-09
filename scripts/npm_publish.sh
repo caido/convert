@@ -6,6 +6,8 @@ echo "============================"
 echo "= Publish version $VERSION ="
 echo "============================"
 
+cargo bump "$VERSION" -k caido-convert
+
 cd caido-convert || exit;
 cargo publish || exit;
 cd ../
