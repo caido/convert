@@ -8,14 +8,6 @@ echo "============================"
 echo "= Publish version $VERSION ="
 echo "============================"
 
-echo "Bump caido-convert version to $VERSION" 
-cargo bump "$VERSION" -k caido-convert || exit 1;
-
-cd caido-convert || exit 1;
-echo "Publish caido-convert"
-cargo publish --allow-dirty || exit 1;
-cd ../
-
 echo "Set convert wasm package version"
 cargo bump "$VERSION" -k convert || exit 1;
 
