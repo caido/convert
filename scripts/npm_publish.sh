@@ -6,6 +6,10 @@ echo "============================"
 echo "= Publish version $VERSION ="
 echo "============================"
 
+cd caido-convert || exit;
+cargo publish || exit;
+cd ../
+
 echo "Set convert wasm package version"
 cargo bump "$VERSION" -k convert
 

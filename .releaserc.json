@@ -25,7 +25,6 @@
     [
       "@semantic-release/exec",
       {
-        "verifyConditionsCmd": "./verify.sh",
         "publishCmd": "./scripts/npm_publish.sh ${nextRelease.version}"
       }
     ],
