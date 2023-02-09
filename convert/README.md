@@ -3,11 +3,11 @@
 An encoding library for web security applications. 
 
 ## Install
-`npm install caido-convert`
+`npm install @caido/convert`
 
 ## Usage
 ```
-import { Base64Encode } from 'caido-convert'
+import { Base64Encode } from '@caido/convert'
 
 let utf8Encode = new TextEncoder();
 let utf8Decode = new TextDecoder();

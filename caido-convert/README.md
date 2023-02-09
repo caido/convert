@@ -6,6 +6,8 @@ Welcome to caido convert package! This repo contains the code we use to encode, 
 ### Base64
 ```rust
 fn main() {
+  use caido_convert::{Base64Decode, Operation, Base64Encode};
+
   let encoder = Base64Decode::new();
   let decoded = encoder.execute("Y2FpZG8=".as_bytes()).unwrap();
   println!("{}", String::from_utf8(decoded).unwrap()); // caido
