@@ -7,6 +7,8 @@ runs:
     - uses: actions/checkout@v3
     - name: Install just
       uses: extractions/setup-just@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Restore cargo cache
       uses: Swatinem/rust-cache@v2
     - name: Set Node.js 19.x
