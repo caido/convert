@@ -7,7 +7,7 @@
     "test": "yarn exe $(yarn bin jest)"
   },
   "dependencies": {
-    "convert": "0.1.0",
+    "convert": "4.10.0",
     "next": "^13.0.2"
   },
   "devDependencies": {
