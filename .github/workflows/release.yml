@@ -17,6 +17,8 @@ jobs:
 
       - name: Setup dependencies and cache
         uses: ./.github/actions/setup
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup release dependencies
         uses: ./.github/actions/prepare-release

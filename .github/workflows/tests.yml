@@ -23,6 +23,8 @@ jobs:
 
       - name: "Setup dependencies and cache"
         uses: ./.github/actions/setup
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install rust toolchain 
         run: rustup show

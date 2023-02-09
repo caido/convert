@@ -1,19 +1,29 @@
 name: "Setup"
 description: "Install dependencies"
 
+inputs:
+  github-token:
+    required: true
+    description: "Github token"
+
 runs:
   using: composite
   steps:
     - uses: actions/checkout@v3
+
     - name: Install just
       uses: extractions/setup-just@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+
     - name: Restore cargo cache
       uses: Swatinem/rust-cache@v2
+
     - name: Set Node.js 19.x
       uses: actions/setup-node@v3
       with:
         node-version: 19.x
+
     - uses: jetli/wasm-pack-action@v0.4.0
+
     - uses: c-hive/gha-yarn-cache@v2 
