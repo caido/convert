@@ -12,7 +12,6 @@
         "allFeatures": true,
         "check": true,
         "checkArgs": [
-          "--no-deps",
           "-p",
           "caido-convert"
         ],
