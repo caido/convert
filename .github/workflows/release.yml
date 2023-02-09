@@ -19,7 +19,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Setup release dependencies
-        uses: ./.github/actions/setup
+        uses: ./.github/actions/prepare-release
 
       - name: Install node dependencies
         run: yarn install
