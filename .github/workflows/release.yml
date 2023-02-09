@@ -1,0 +1,32 @@
+name: Release, publish and update
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Setup dependencies and cache
+        uses: ./.github/actions/setup
+
+      - name: Setup release dependencies
+        uses: ./.github/actions/setup
+
+      - name: Install node dependencies
+        run: yarn install
+
+      - name: Semantic release
+        run: yarn run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_TOKEN }}

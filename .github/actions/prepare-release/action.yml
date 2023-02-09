@@ -8,7 +8,3 @@ runs:
       shell: bash
       run: |
         cargo install --git https://github.com/caido/action-cargo-bump
-    - name: Install toml-cli
-      shell: bash
-      run: |
-        cargo install toml-cli
