@@ -1,13 +1,6 @@
 {
-  "private": true,
   "scripts": {
     "release": "yarn exec semantic-release"
-  },
-  "workspaces": {
-    "packages": [
-      "wasm-package",
-      "web-tests"
-    ]
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^9.0.2",

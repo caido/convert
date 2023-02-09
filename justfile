@@ -14,7 +14,7 @@ build-wasm-dev:
 wasm-tests:
   yarn replace-in-file "/\"module\":/" "\"type\": \"module\", \"main\":" "{{wasm-package-path}}/package.json" --isRegex
   yarn prettier --write "{{wasm-package-path}}/package.json"
-  yarn workspace web-tests test
+  cd ./web-tests && yarn test
 
 clippy:
   cargo clippy -p caido-convert
