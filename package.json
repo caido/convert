@@ -1,5 +1,6 @@
 {
   "private": true,
+  "type": "module",
   "workspaces": {
     "packages": [
       "wasm-package",
@@ -10,5 +11,10 @@
     "prettier": "^2.7.1",
     "replace-in-file": "^6.3.5"
   },
-  "packageManager": "yarn@4.0.0-rc.25"
+  "packageManager": "yarn@4.0.0-rc.34",
+  "release": {
+    "branches": [
+      "main"
+    ]
+  }
 }
