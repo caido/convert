@@ -2,7 +2,7 @@
 
 echo "Publish caido-convert"
 cd caido-convert || exit 1;
-cargo publish || exit 1;
+cargo publish --allow-dirty || exit 1;
 cd ../
 
 echo "Build npm package"
@@ -12,4 +12,4 @@ echo "Publish npm package"
 cd wasm-package || exit 1;
 npm publish --access=public || exit 1; 
 
-echo "Pacakges are publish"
+echo "Packages are publish"
