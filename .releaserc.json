@@ -7,21 +7,6 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/github",
     [
-      "semantic-release-cargo",
-      {
-        "allFeatures": true,
-        "check": true,
-        "checkArgs": [
-          "-p",
-          "caido-convert"
-        ],
-        "publishArgs": [
-          "-p",
-          "caido-convert"
-        ]
-      }
-    ],
-    [
       "@semantic-release/git",
       {
         "message": "ci(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
@@ -30,6 +15,7 @@
     [
       "@semantic-release/exec",
       {
+        "prepareCmd": "./scripts/update-versions.sh ${nextRelease.version}",
         "publishCmd": "./scripts/publish.sh ${nextRelease.version}"
       }
     ]
