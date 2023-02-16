@@ -32,3 +32,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_TOKEN }}
+
+      - name: Setup github package registry credentials
+        run: echo 'registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=$GHP_TOKEN' > ~/.npmrc
+        env:
+          GHP_TOKEN: ${{ secrets.GH_PACKAGE_TOKEN }}
+
+      - name: Publish to github package
+        run: cd wasm-package && npm publish
