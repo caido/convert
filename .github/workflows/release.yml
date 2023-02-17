@@ -23,6 +23,11 @@ jobs:
       - name: Setup release dependencies
         uses: ./.github/actions/prepare-release
 
+      - name: Setup github package registry credentials
+        run: echo 'registry=https://registry.npmjs.org/\n//registry.npmjs.org/:_authToken=$NPM_TOKEN' > ~/.npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Install node dependencies
         run: yarn install
 
