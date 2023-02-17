@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 VERSION="$1"
 
 [[ -n "$VERSION" ]] || exit 1;
