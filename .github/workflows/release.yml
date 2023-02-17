@@ -44,4 +44,5 @@ jobs:
           GHP_TOKEN: ${{ secrets.GH_PACKAGE_TOKEN }}
 
       - name: Publish to github package
-        run: cd wasm-package && npm publish
+        run: npm publish
+        working-directory: ./wasm-package 
