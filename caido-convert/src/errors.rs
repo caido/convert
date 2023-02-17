@@ -1,13 +1,17 @@
 use core::str::Utf8Error;
 use std::fmt::Debug;
 use std::string::FromUtf8Error;
+use thiserror::Error;
 
 use base64::DecodeError as DecodeB64Error;
 use hex::FromHexError;
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum OperationError {
+    #[error("Utf8 decode error")]
     DecodeUtf8Error,
+
+    #[error("Decode error")]
     DecodeError(String),
 }
 
