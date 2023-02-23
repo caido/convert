@@ -3,6 +3,8 @@ import {
   UrlDecode,
   Base64Encode,
   Base64Decode,
+  Base32HexDecode,
+  Base32HexEncode,
   HexEncode,
   HexDecode,
   HtmlDecode,
@@ -48,6 +50,26 @@ describe("Base64 encoding", () => {
     let encoder = new Base64Decode();
     let utf8Encode = new TextEncoder();
     let actual = encoder.apply(utf8Encode.encode("Y2FpZG8="));
+    let expected = utf8Encode.encode("caido");
+
+    expect(equal(actual, expected)).toBeTruthy();
+  });
+});
+
+describe("Base32Hex encoding", () => {
+  it("Base32Hex encode bytes", () => {
+    let encoder = new Base32HexEncode();
+    let utf8Encode = new TextEncoder();
+    let actual = encoder.apply(utf8Encode.encode("caido"));
+    let expected = utf8Encode.encode("CDGMIP3F");
+
+    expect(equal(actual, expected)).toBeTruthy();
+  });
+
+  it("Base32Hex decode bytes", () => {
+    let encoder = new Base32HexDecode();
+    let utf8Encode = new TextEncoder();
+    let actual = encoder.apply(utf8Encode.encode("CDGMIP3F"));
     let expected = utf8Encode.encode("caido");
 
     expect(equal(actual, expected)).toBeTruthy();

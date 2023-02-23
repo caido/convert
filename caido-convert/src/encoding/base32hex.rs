@@ -1,4 +1,4 @@
-use data_encoding;
+use data_encoding::BASE32HEX;
 #[cfg(target_family = "wasm")]
 use serde::{Deserialize, Serialize};
 
@@ -7,35 +7,35 @@ use crate::OperationError;
 
 #[derive(Clone)]
 #[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
-pub struct Base64Decode {}
+pub struct Base32HexDecode {}
 
-impl Operation for Base64Decode {
+impl Operation for Base32HexDecode {
     fn execute(&self, input: &[u8]) -> Result<Vec<u8>, OperationError> {
-        data_encoding::BASE64
+        BASE32HEX
             .decode(input)
             .map_err(|_| OperationError::DecodeError("Invalid base64 input".to_string()))
     }
 }
 
-impl Base64Decode {
+impl Base32HexDecode {
     pub fn new() -> Self {
-        Base64Decode {}
+        Base32HexDecode {}
     }
 }
 
 #[derive(Clone)]
 #[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
-pub struct Base64Encode {}
+pub struct Base32HexEncode {}
 
-impl Operation for Base64Encode {
+impl Operation for Base32HexEncode {
     fn execute(&self, input: &[u8]) -> Result<Vec<u8>, OperationError> {
-        Ok(data_encoding::BASE64.encode(input).into())
+        Ok(BASE32HEX.encode(input).into())
     }
 }
 
-impl Base64Encode {
+impl Base32HexEncode {
     pub fn new() -> Self {
-        Base64Encode {}
+        Base32HexEncode {}
     }
 }
 
@@ -45,17 +45,17 @@ mod tests {
 
     #[test]
     fn base64_decode() {
-        let encoder = Base64Decode::new();
-        let actual = encoder.execute("Y2FpZG8=".as_bytes()).unwrap();
+        let encoder = Base32HexDecode::new();
+        let actual = encoder.execute("CDGMIP3F".as_bytes()).unwrap();
         let expected = "caido".as_bytes().to_vec();
         assert_eq!(actual, expected);
     }
 
     #[test]
     fn base64_encode() {
-        let encoder = Base64Encode::new();
+        let encoder = Base32HexEncode::new();
         let actual = encoder.execute("caido".as_bytes()).unwrap();
-        let expected = "Y2FpZG8=".as_bytes().to_vec();
+        let expected = "CDGMIP3F".as_bytes().to_vec();
         assert_eq!(actual, expected);
     }
 }
