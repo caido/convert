@@ -24,7 +24,9 @@ jobs:
         uses: ./.github/actions/prepare-release
 
       - name: Setup github package registry credentials
-        run: echo 'registry=https://registry.npmjs.org/\n//registry.npmjs.org/:_authToken=$NPM_TOKEN' > ~/.npmrc
+        run: |
+          echo 'registry=https://registry.npmjs.org'  > ~/.npmrc
+          echo '//registry.npmjs.org/:_authToken=$NPM_TOKEN' >> ~/.npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -39,7 +41,9 @@ jobs:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_TOKEN }}
 
       - name: Setup github package registry credentials
-        run: echo 'registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=$GHP_TOKEN' > ~/.npmrc
+        run: |
+          echo '@caido:registry=https://npm.pkg.github.com/' > ~/.npmrc
+          echo '//npm.pkg.github.com/:_authToken=$GHP_TOKEN' >> ~/.npmrc
         env:
           GHP_TOKEN: ${{ secrets.GH_PACKAGE_TOKEN }}
 
