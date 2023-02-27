@@ -25,8 +25,8 @@ jobs:
 
       - name: Setup npmjs package registry credentials
         run: |
-          echo '@caido:registry=https://registry.npmjs.org'  > ~/.npmrc
-          echo '//registry.npmjs.org/:_authToken=$NPM_TOKEN' >> ~/.npmrc
+          echo '@caido:registry=https://registry.npmjs.org/'  > ~/.npmrc
+          echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> ~/.npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -43,7 +43,7 @@ jobs:
       - name: Setup github package registry credentials
         run: |
           echo '@caido:registry=https://npm.pkg.github.com/' > ~/.npmrc
-          echo '//npm.pkg.github.com/:_authToken=$GHP_TOKEN' >> ~/.npmrc
+          echo '//npm.pkg.github.com/:_authToken=${GHP_TOKEN}' >> ~/.npmrc
         env:
           GHP_TOKEN: ${{ secrets.GH_PACKAGE_TOKEN }}
 
