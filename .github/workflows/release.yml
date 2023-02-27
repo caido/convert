@@ -23,15 +23,15 @@ jobs:
       - name: Setup release dependencies
         uses: ./.github/actions/prepare-release
 
+      - name: Install node dependencies
+        run: yarn install
+
       - name: Setup npmjs package registry credentials
         run: |
           echo '@caido:registry=https://registry.npmjs.org/'  > ~/.npmrc
           echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> ~/.npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Install node dependencies
-        run: yarn install
 
       - name: Semantic release
         run: yarn run release
