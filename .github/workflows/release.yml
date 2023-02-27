@@ -30,8 +30,6 @@ jobs:
         run: |
           echo '@caido:registry=https://registry.npmjs.org/'  > ~/.npmrc
           echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> ~/.npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Semantic release
         run: yarn run release
@@ -44,9 +42,9 @@ jobs:
         run: |
           echo '@caido:registry=https://npm.pkg.github.com/' > ~/.npmrc
           echo '//npm.pkg.github.com/:_authToken=${GHP_TOKEN}' >> ~/.npmrc
-        env:
-          GHP_TOKEN: ${{ secrets.GH_PACKAGE_TOKEN }}
 
       - name: Publish to github package
         run: npm publish
         working-directory: ./wasm-package
+        env:
+          GHP_TOKEN: ${{ secrets.GH_PACKAGE_TOKEN }}
