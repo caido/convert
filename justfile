@@ -5,10 +5,10 @@ default:
     @just --list
 
 build-convert-release:
-  wasm-pack build --out-dir ../{{wasm-package-path}} --target=bundler ./{{wasm-crate}} --scope caido
+  wasm-pack build --out-name index --out-dir ../{{wasm-package-path}} --target=bundler ./{{wasm-crate}} --scope caido
 
 build-wasm-dev:
-  wasm-pack build --out-dir ../{{wasm-package-path}} --target=bundler ./{{wasm-crate}} --dev
+  wasm-pack build --out-name index --out-dir ../{{wasm-package-path}} --target=bundler ./{{wasm-crate}} --dev
 
 wasm-tests:
   yarn replace-in-file "/\"module\":/" "\"type\": \"module\", \"main\":" "{{wasm-package-path}}/package.json" --isRegex
@@ -25,8 +25,8 @@ format:
 format-check:
   cargo +nightly fmt --check
 
-test: 
-  cargo test -p caido-convert 
+test:
+  cargo test -p caido-convert
   just build-wasm-dev
   just wasm-tests
 
