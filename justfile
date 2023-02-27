@@ -2,7 +2,7 @@ wasm-package-path := "./wasm-package"
 wasm-crate := "./convert"
 
 default:
-    @just --list
+  @just --list
 
 build-convert-release:
   wasm-pack build --out-name index --out-dir ../{{wasm-package-path}} --target=bundler ./{{wasm-crate}} --scope caido
