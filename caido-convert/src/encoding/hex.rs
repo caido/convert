@@ -9,6 +9,7 @@ use crate::OperationError;
 #[derive(Clone)]
 #[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub struct HexDecode {
+    prefix: Option<String>,
     delimiter: Option<String>,
 }
 
@@ -21,22 +22,20 @@ pub enum HexFormat {
 
 impl Operation for HexDecode {
     fn execute(&self, input: &[u8]) -> Result<Vec<u8>, OperationError> {
-        let mut hex_byte_str = input.to_vec();
-        if let Some(del) = &self.delimiter {
-            hex_byte_str = input
-                .split_str(&del)
-                .flatten()
-                .cloned()
-                .filter(|c| *c != b'\n')
-                .collect();
+        let mut input = input.to_vec();
+        if let Some(p) = &self.prefix {
+            input = input.replace(p, "");
         };
-        Ok(hex::decode(hex_byte_str.to_ascii_uppercase())?)
+        if let Some(d) = &self.delimiter {
+            input = input.replace(d, "");
+        };
+        Ok(hex::decode(input)?)
     }
 }
 
 impl HexDecode {
-    pub fn new(delimiter: Option<String>) -> Self {
-        HexDecode { delimiter }
+    pub fn new(prefix: Option<String>, delimiter: Option<String>) -> Self {
+        HexDecode { prefix, delimiter }
     }
 }
 
@@ -44,8 +43,8 @@ impl HexDecode {
 #[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub struct HexEncode {
     format: HexFormat,
+    prefix: Option<String>,
     delimiter: Option<String>,
-    bytes_per_line: usize,
 }
 
 impl Operation for HexEncode {
@@ -55,29 +54,24 @@ impl Operation for HexEncode {
             HexFormat::Upper => hex::encode_upper(input),
         };
         let mut output = vec![];
-        let mut i = if self.bytes_per_line == 0 {
-            hex_string.len()
-        } else {
-            1
-        };
         let delimiter = self
             .delimiter
             .clone()
             .and_then(|d| if d.is_empty() { None } else { Some(d) });
-        for hex in hex_string.as_bytes().chunks(2) {
-            if let Some(del) = &delimiter {
-                output.extend_from_slice(del.as_bytes());
+        let prefix = self
+            .prefix
+            .clone()
+            .and_then(|p| if p.is_empty() { None } else { Some(p) });
+        let mut chunks = hex_string.as_bytes().chunks(2).peekable();
+        while let Some(chunk) = chunks.next() {
+            if let Some(p) = &prefix {
+                output.extend_from_slice(p.as_bytes());
             }
-            output.extend_from_slice(hex);
-            if i == self.bytes_per_line {
-                output.push(b'\n');
-                i %= self.bytes_per_line;
-            }
-            i += 1
-        }
-        if let Some(char) = output.last() {
-            if *char == b'\n' {
-                output.pop();
+            output.extend_from_slice(chunk);
+            if let Some(d) = &delimiter {
+                if chunks.peek().is_some() {
+                    output.extend_from_slice(d.as_bytes());
+                }
             }
         }
         Ok(output)
@@ -85,10 +79,10 @@ impl Operation for HexEncode {
 }
 
 impl HexEncode {
-    pub fn new(format: HexFormat, delimiter: Option<String>, bytes_per_line: usize) -> Self {
+    pub fn new(format: HexFormat, prefix: Option<String>, delimiter: Option<String>) -> Self {
         HexEncode {
             format,
-            bytes_per_line,
+            prefix,
             delimiter,
         }
     }
@@ -99,52 +93,60 @@ mod tests {
     use super::*;
 
     #[test]
-    fn hex_decode_0x() {
-        let encoder = HexDecode::new(None);
+    fn hex_decode_no_prefix_no_delimiter() {
+        let encoder = HexDecode::new(None, None);
         let actual = encoder.execute("636169646f".as_bytes()).unwrap();
         let expected = "caido".as_bytes().to_vec();
         assert_eq!(actual, expected);
     }
 
     #[test]
-    fn hex_decode_no_prefix() {
-        let encoder = HexDecode::new(Some("\\x".to_string()));
+    fn hex_decode_prefix() {
+        let encoder = HexDecode::new(Some("\\x".to_string()), None);
         let actual = encoder
-            .execute("\\x63\\x61\n\\x69\\x64\n\\x6f".as_bytes())
+            .execute("\\x63\\x61\\x69\\x64\\x6f".as_bytes())
             .unwrap();
         let expected = "caido".as_bytes().to_vec();
         assert_eq!(actual, expected);
     }
 
     #[test]
-    fn hex_encode_upper() {
-        let encoder = HexEncode::new(HexFormat::Upper, Some("\\x".to_string()), 0);
+    fn hex_decode_delimiter() {
+        let encoder = HexDecode::new(None, Some(",".to_string()));
+        let actual = encoder.execute("63,61,69,64,6f".as_bytes()).unwrap();
+        let expected = "caido".as_bytes().to_vec();
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn hex_encode_prefix_upper() {
+        let encoder = HexEncode::new(HexFormat::Upper, Some("\\x".to_string()), None);
         let actual = encoder.execute("caido".as_bytes()).unwrap();
         let expected = "\\x63\\x61\\x69\\x64\\x6F".as_bytes().to_vec();
         assert_eq!(actual, expected);
     }
 
     #[test]
-    fn hex_encode_lower() {
-        let encoder = HexEncode::new(HexFormat::Lower, Some("0x".to_string()), 0);
+    fn hex_encode_prefix_lower() {
+        let encoder = HexEncode::new(HexFormat::Lower, Some("0x".to_string()), None);
         let actual = encoder.execute("caido".as_bytes()).unwrap();
         let expected = "0x630x610x690x640x6f".as_bytes().to_vec();
         assert_eq!(actual, expected);
     }
 
     #[test]
-    fn hex_encode_prefix_lower() {
-        let encoder = HexEncode::new(HexFormat::Lower, None, 2);
+    fn hex_encode_delimiter_lower() {
+        let encoder = HexEncode::new(HexFormat::Lower, None, Some("\n".to_string()));
         let actual = encoder.execute("caido".as_bytes()).unwrap();
-        let expected = "6361\n6964\n6f".as_bytes().to_vec();
+        let expected = "63\n61\n69\n64\n6f".as_bytes().to_vec();
         assert_eq!(actual, expected);
     }
 
     #[test]
-    fn hex_encode_prefix_upper() {
-        let encoder = HexEncode::new(HexFormat::Upper, None, 0);
+    fn hex_encode_delimiter_upper() {
+        let encoder = HexEncode::new(HexFormat::Upper, None, Some("\n".to_string()));
         let actual = encoder.execute("caido".as_bytes()).unwrap();
-        let expected = "636169646F".as_bytes().to_vec();
+        let expected = "63\n61\n69\n64\n6F".as_bytes().to_vec();
         assert_eq!(actual, expected);
     }
 }

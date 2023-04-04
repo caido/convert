@@ -12,16 +12,16 @@ pub struct HexEncode {
 const IHexEncode: &'static str = r#"
 interface IHexEncode {
     format: "Upper" | "Lower";
+    prefix?: string;
     delimiter?: string;
-    bytes_per_line?: number; 
 }
 "#;
 
 #[derive(Serialize, Deserialize)]
 struct JsHexEncode {
     format: String, // Wasm bindgen doesnt support enums yet
+    prefix: Option<String>,
     delimiter: Option<String>,
-    bytes_per_line: Option<usize>,
 }
 
 #[wasm_bindgen]
@@ -47,8 +47,8 @@ impl HexEncode {
             from_value(js_value).map_err(|_err| JsValue::from_str("Invalid argument"))?;
         let hex_encode = caido_convert::HexEncode::new(
             convert_hex_format(js_hex_encode.format)?,
+            js_hex_encode.prefix,
             js_hex_encode.delimiter,
-            js_hex_encode.bytes_per_line.unwrap_or(0),
         );
         Ok(HexEncode { hex_encode })
     }
@@ -68,6 +68,7 @@ pub struct HexDecode {
 #[wasm_bindgen(typescript_custom_section)]
 const IHexDecode: &'static str = r#"
 interface IHexDecode {
+    prefix?: string;
     delimiter?: string;
 }
 "#;

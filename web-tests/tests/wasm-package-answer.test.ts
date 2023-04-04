@@ -80,8 +80,8 @@ describe("Hex encoding", () => {
   it("Hex encode bytes", () => {
     let encoder = new HexEncode({
       format: "Upper",
-      delimiter: "",
-      bytes_per_line: 10,
+      prefix: "",
+      delimiter: ""
     });
     let utf8Encode = new TextEncoder();
     let actual = encoder.apply(utf8Encode.encode("caido"));
@@ -92,7 +92,8 @@ describe("Hex encoding", () => {
 
   it("Hex decode bytes", () => {
     let encoder = new HexDecode({
-      delimiter: "0x",
+      prefix: "0x",
+      delimiter: ""
     });
     let utf8Encode = new TextEncoder();
     let actual = encoder.apply(utf8Encode.encode("0x630x610x690x640x6f"));
