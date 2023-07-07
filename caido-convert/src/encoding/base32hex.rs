@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use crate::Operation;
 use crate::OperationError;
 
-#[derive(Clone)]
+#[derive(Clone, Copy)]
 #[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub struct Base32HexDecode {}
 
@@ -18,7 +18,7 @@ impl Operation for Base32HexDecode {
 }
 
 impl Base32HexDecode {
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         Base32HexDecode {}
     }
 }
@@ -34,7 +34,7 @@ impl Operation for Base32HexEncode {
 }
 
 impl Base32HexEncode {
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         Base32HexEncode {}
     }
 }

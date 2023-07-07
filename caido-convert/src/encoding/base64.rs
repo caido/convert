@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use crate::Operation;
 use crate::OperationError;
 
-#[derive(Clone)]
+#[derive(Clone, Copy)]
 #[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 #[cfg_attr(target_family = "wasm", serde(rename_all = "snake_case"))]
 pub enum Base64Format {
@@ -35,7 +35,7 @@ impl Operation for Base64Decode {
 }
 
 impl Base64Decode {
-    pub fn new(format: Base64Format, pad: bool) -> Self {
+    pub const fn new(format: Base64Format, pad: bool) -> Self {
         Base64Decode { format, pad }
     }
 }
@@ -61,7 +61,7 @@ impl Operation for Base64Encode {
 }
 
 impl Base64Encode {
-    pub fn new(format: Base64Format, pad: bool) -> Self {
+    pub const fn new(format: Base64Format, pad: bool) -> Self {
         Base64Encode { format, pad }
     }
 }

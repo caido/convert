@@ -61,7 +61,7 @@ impl Operation for HtmlDecode {
 }
 
 impl HtmlDecode {
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         HtmlDecode {}
     }
 }
@@ -88,7 +88,7 @@ impl Operation for HtmlEncode {
 }
 
 impl HtmlEncode {
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         HtmlEncode {}
     }
 }

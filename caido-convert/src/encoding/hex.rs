@@ -13,7 +13,7 @@ pub struct HexDecode {
     delimiter: Option<String>,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Copy)]
 #[cfg_attr(target_family = "wasm", derive(Serialize, Deserialize))]
 pub enum HexFormat {
     Upper,
@@ -34,7 +34,7 @@ impl Operation for HexDecode {
 }
 
 impl HexDecode {
-    pub fn new(prefix: Option<String>, delimiter: Option<String>) -> Self {
+    pub const fn new(prefix: Option<String>, delimiter: Option<String>) -> Self {
         HexDecode { prefix, delimiter }
     }
 }
@@ -79,7 +79,7 @@ impl Operation for HexEncode {
 }
 
 impl HexEncode {
-    pub fn new(format: HexFormat, prefix: Option<String>, delimiter: Option<String>) -> Self {
+    pub const fn new(format: HexFormat, prefix: Option<String>, delimiter: Option<String>) -> Self {
         HexEncode {
             format,
             prefix,
