@@ -11,7 +11,10 @@ impl Base64Encode {
     #[wasm_bindgen(constructor)]
     pub fn new() -> Base64Encode {
         Base64Encode {
-            base64_encode: caido_convert::Base64Encode::new(),
+            base64_encode: caido_convert::Base64Encode::new(
+                caido_convert::Base64Format::Standard,
+                true,
+            ),
         }
     }
 
@@ -32,7 +35,10 @@ impl Base64Decode {
     #[wasm_bindgen(constructor)]
     pub fn new() -> Base64Decode {
         Base64Decode {
-            base64_decode: caido_convert::Base64Decode::new(),
+            base64_decode: caido_convert::Base64Decode::new(
+                caido_convert::Base64Format::Standard,
+                true,
+            ),
         }
     }
 
