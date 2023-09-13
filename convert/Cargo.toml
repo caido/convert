@@ -16,7 +16,7 @@ crate-type = ["cdylib"]
 [dependencies]
 caido-convert = { path = "../caido-convert" }
 serde = { version = "1.0", features = ["derive"] }
-serde-wasm-bindgen = "0.4"
+serde-wasm-bindgen = "0.6"
 wasm-bindgen = "0.2.69"
 
 [profile.release]
