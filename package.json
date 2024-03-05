@@ -13,5 +13,5 @@
     "semantic-release": "^20.1.0",
     "semantic-release-cargo": "^2.2.1"
   },
-  "packageManager": "yarn@4.0.0-rc.34"
+  "packageManager": "yarn@4.1.1"
 }
