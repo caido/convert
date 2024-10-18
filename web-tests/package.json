@@ -7,7 +7,7 @@
     "test": "yarn exe $(yarn bin jest)"
   },
   "dependencies": {
-    "next": "^13.0.2"
+    "next": "^14.0.0"
   },
   "devDependencies": {
     "@types/jest": "^29.2.2",
