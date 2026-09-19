@@ -4583,9 +4583,7 @@ safe-buffer@~5.2.0:
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
 semantic-release-cargo@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/semantic-release-cargo/-/semantic-release-cargo-2.2.1.tgz#14836f0f83b8bb8022dbd7e06895f208b8b59d6c"
-  integrity sha512-z5uZBPkpHFIO5kgwXbWsTTLFKml2TBdzlc4F3bsK4xG4c+q1vqrnEU+NKPTrY7x8G+hDb7pW/8u6Dw9CpxR1wg==
+  version "2.4.2"
   dependencies:
     execa "6.1.0"
 
